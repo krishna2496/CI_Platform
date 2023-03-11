@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="icon" id="favicon" href="<%= BASE_URL %>favicon.ico">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #app {
+        display: none;
+      }
+
+      .loader-enable {
+          overflow: hidden;
+      }
+
+      .loader-wrap {
+          display: none !important;
+      }
+
+      .loader-enable .loader-wrap {
+          display: flex !important;
+      }
+
+      /** Loader Style **/
+
+      .loader-wrap {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 10003 !important;
+        display: flex;
+        align-items: center;
+      }
+
+      .loader-wrap .loader,
+      .loader-wrap .loader:after {
+        border-radius: 50%;
+        width: 10em;
+        height: 10em;
+      }
+
+      .loader-wrap .loader {
+        margin: 60px auto;
+        font-size: 10px;
+        position: relative;
+        text-indent: -9999em;
+        border-top: 1.1em solid #e8e8e8;
+        border-right: 1.1em solid #e8e8e8;
+        border-bottom: 1.1em solid #e8e8e8;
+        border-left: 1.1em solid #414141;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-animation: load8 1.1s infinite linear;
+        animation: load8 1.1s infinite linear;
+      }
+
+      @-webkit-keyframes load8 {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes load8 {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      .hidden,
+      [v-cloak] {
+        display: none
+      }
+    </style>
+</head>
+
+<body>
+<div class="loader-wrap">
+    <div class="loader"></div>
+</div>
+<noscript>
+    <strong>We're sorry but ci_platform doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+<link rel="stylesheet" href="" id="customCss" />
+<script type="text/javascript" src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js" integrity="sha512-SdpEVyZpz1/wp3L1yUNhe9C8R6xQgYIPlt3wvKwiNkfGFgxMq3IIjbZ20FFctqdeEGOw4GwMtVKl0F+1DoP/nQ==" crossorigin="anonymous"></script>
+</body>
+
+</html>

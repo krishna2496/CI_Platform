@@ -1,0 +1,128 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ci-api-deployment
+  labels:
+    app: ci-api
+    deployment: {{DEPLOYMENT}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ci-api
+  template:
+    metadata:
+      labels:
+        app: ci-api
+        deployment: {{DEPLOYMENT}}
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+            weight: 1
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+                - spot
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-api
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 10
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-api
+              topologyKey: kubernetes.io/hostname
+            weight: 20
+      containers:
+      - image: lusotycoon/apache-exporter
+        imagePullPolicy: Always
+        name: exporter
+        ports:
+        - containerPort: 9117
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 10m
+
+      - image: registry.kubernetes.infra.optimy.net/ci/ci-source:{{GO_PIPELINE_LABEL}}
+        name: ci-api 
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 40m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /optimy/api/.env
+          name: ci-api-config
+          subPath: .env
+        - mountPath: /etc/apache2/sites-enabled/000-default.conf
+          name: ci-api-apache-config
+          subPath: 000-default.conf
+        ports:
+        - containerPort: 80
+
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: ci-api-config
+        name: ci-api-config
+      - configMap:
+          defaultMode: 420
+          name: ci-api-apache-config
+        name: ci-api-apache-config
+            
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ci-api-service
+  labels:
+    app: ci-api
+spec:
+  selector:
+    app: ci-api
+  ports:
+    - protocol: TCP
+      port: 80
+      name: ci-api-service
+    - protocol: TCP
+      port: 9117
+      name: exporter
+  clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ci-api-ingress
+spec:
+  rules:
+  - host: api.ci.prod.optimy.net
+    http:
+      paths:
+      - backend:
+          serviceName: ci-api-service
+          servicePort: 80
+status:
+  loadBalancer: {}

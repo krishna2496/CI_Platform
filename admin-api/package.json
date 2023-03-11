@@ -1,0 +1,14 @@
+{
+  "name": "ci_platform",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "watch-sass": "node-sass ./scss/custom.scss ./css/style.css --watch",
+    "compile-sass": "node-sass ./scss/custom.scss ./css/style.css"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "core-js": "^2.6.5",
+    "bootstrap-vue": "^2.0.0-rc.20"
+  }
+}

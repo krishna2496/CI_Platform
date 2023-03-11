@@ -1,0 +1,26 @@
+@import "default-theme-variables";
+
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap-vue/src/index.scss";
+@import "node_modules/slick-carousel/slick/slick.scss";
+
+/* SCSS for custom variables and variables overrides */
+@import "custom-variables";
+
+@import "mixin";
+@import "typography";
+@import "footer";
+@import "header";
+@import "form-element";
+@import "login";
+@import "cms-content";
+@import "card";
+@import "mission-detail";
+@import "modal";
+@import "table";
+@import "error-page";
+@import "loader";
+@import "layout";
+
+/* SCSS for custom styles */
+@import "custom-styles";

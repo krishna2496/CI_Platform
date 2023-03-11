@@ -1,0 +1,126 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ci-api-doc-deployment
+  labels:
+    app: ci-api-doc
+    deployment: {{DEPLOYMENT}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ci-api-doc
+  template:
+    metadata:
+      labels:
+        app: ci-api-doc
+        deployment: {{DEPLOYMENT}}
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+            weight: 1
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+                - spot
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-api-doc
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 10
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-api-doc
+              topologyKey: kubernetes.io/hostname
+            weight: 20
+      containers:
+      - image: lusotycoon/apache-exporter
+        imagePullPolicy: Always
+        name: exporter
+        ports:
+        - containerPort: 9117
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 10m
+
+      - image: registry.kubernetes.infra.optimy.net/ci/ci-source:{{GO_PIPELINE_LABEL}}
+        name: ci-api-doc
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 40m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /etc/apache2/sites-enabled/000-default.conf
+          name: ci-api-doc-apache-config
+          subPath: 000-default.conf
+        ports:
+        - containerPort: 80
+
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: ci-api-doc-apache-config
+        name: ci-api-doc-apache-config
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: staging
+  name: ci-api-doc-service
+  labels:
+    app: ci-api-doc
+spec:
+  selector:
+    app: ci-api-doc
+  ports:
+    - protocol: TCP
+      port: 80
+      name: ci-api-doc-service
+    - protocol: TCP
+      port: 9117
+      name: exporter
+  clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/priority: "1"
+    ingress.kubernetes.io/auth-type: "basic"
+    ingress.kubernetes.io/auth-secret: "ci-api-doc"
+  name: ci-api-doc-ingress
+  namespace: staging
+spec:
+  rules:
+  - host: api-doc.ci.staging.optimy.net
+    http:
+      paths:
+      - backend:
+          serviceName: ci-api-doc-service
+          servicePort: 80
+status:
+  loadBalancer: {}

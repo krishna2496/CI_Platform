@@ -1,0 +1,27 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ci-cronjob-api-cli
+spec:
+  concurrencyPolicy: Forbid 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: registry.kubernetes.infra.optimy.net/ci/ci-source:{{GO_PIPELINE_LABEL}}
+            imagePullPolicy: IfNotPresent
+            name: api-cli
+            command:
+              - /optimy/api/run-jobs.sh
+            volumeMounts:
+            - mountPath: /optimy/api/.env
+              name: ci-config
+              subPath: .env
+          restartPolicy: OnFailure
+          volumes:
+          - configMap:
+              defaultMode: 420
+              name: ci-api-config
+            name: ci-config
+  schedule: "* * * * *"

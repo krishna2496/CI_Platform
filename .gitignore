@@ -1,0 +1,64 @@
+# ROOT
+.idea
+
+# ADMIN-API
+admin-api/vendor
+admin-api/public/storage
+admin-api/bin/storage
+admin-api/bin/php/storage
+admin-api/.idea
+admin-api/public/uploads
+admin-api/node_modules
+admin-api/Homestead.json
+admin-api/Homestead.yaml
+admin-api/.env
+admin-api/phpunit.xml
+admin-api/npm-debug.log
+admin-api/storage/*
+!admin-api/storage/app
+
+# ADMIN-API-DOC
+
+# API
+/vendor
+api/.idea
+api/vendor
+api/public/storage
+api/public/uploads
+api/.htaccess
+api/node_modules
+api/package-lock.json
+api/Homestead.json
+api/Homestead.yaml
+api/.env
+api/phpunit.xml
+api/storage/*
+api/storage/app/*
+!api/storage/unitTestFiles
+!api/storage/defaultLanguage
+!api/storage/app/default_theme
+!api/storage/app/samlCertificate
+api/vendor
+
+# API-DOC
+
+# FRONTEND
+frontend/.DS_Store
+frontend/node_modules
+frontend/dist
+# local env files
+frontend/.env.local
+frontend/.env.*.local
+frontend/.env.development
+# Log files
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+# Editor directories and files
+frontend/.idea
+frontend/.vscode
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/*.sw?

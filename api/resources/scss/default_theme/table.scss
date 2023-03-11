@@ -1,0 +1,728 @@
+/** Common dashboard table style **/
+.dashboard-table {
+	.table-col {
+		.table-col-inner {
+			height: 100%;
+		}
+
+		@include sm-max {
+			margin-bottom: 30px;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.table-outer {
+		padding: 20px 20px 30px;
+		border: 1px solid $primary-border-color;
+		@extend .message_shadow;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.table-inner {
+			@include sm-max {
+				position: relative;
+			}
+		}
+
+		@include sm-max {
+			padding: 15px 15px 25px;
+		}
+
+		&.timesheet-table-outer {
+			margin-bottom: 20px;
+		}
+
+		h3 {
+			margin-bottom: 20px;
+
+			@include sm-max {
+				margin-bottom: 15px;
+			}
+		}
+
+		h2 {
+			font-size: 24px;
+			line-height: 28px;
+			font-weight: 700;
+
+			@include sm-max {
+				font-size: 20px;
+				line-height: 26px;
+				margin-bottom: 10px;
+				width: 100%;
+			}
+		}
+
+		.table-responsive {
+			margin-bottom: 20px;
+		}
+
+		.table {
+			margin-bottom: 5px;
+
+			tr {
+
+				td,
+				th {
+					border-color: $primary-border-color;
+
+					@include md-max {
+						white-space: nowrap;
+					}
+				}
+
+				th {
+					border-bottom: none;
+				}
+
+				&:last-child {
+					td {
+						border-bottom: 1px solid $primary-border-color;
+					}
+				}
+
+				.action-col {
+					text-align: right;
+
+					.btn {
+						background: transparent !important;
+						border: none !important;
+						width: 20px;
+						height: 20px;
+						padding: 0;
+						margin: 0 0 0 15px;
+						display: inline-block !important;
+
+						&:first-child {
+							margin-left: 0;
+						}
+
+						img {
+							width: 100%;
+							height: 100%;
+							vertical-align: top;
+						}
+					}
+				}
+			}
+
+			.table-link {
+				color: $secondary;
+
+				&:hover {
+					color: $gray-primary;
+				}
+			}
+		}
+	}
+
+	.pagination-block {
+		margin-bottom: 40px;
+		display: flex;
+		flex: 1;
+		-ms-flex: 1;
+		justify-content: flex-end;
+
+		.pagination {
+			li {
+				margin-bottom: 8px !important;
+			}
+		}
+	}
+}
+
+/** Dashboard volunteer-table table style **/
+.volunteery-table {
+	table {
+		td {
+			&.mission-col {
+				width: 35%;
+			}
+
+			&.organisation-col {
+				width: 26%;
+			}
+
+			&.goal-col {
+				width: 30%;
+			}
+
+			&.comment-col {
+				width: 40%;
+				max-width: 1px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+
+				&.remove-truncate {
+					white-space: normal;
+				}
+			}
+		}
+	}
+}
+
+/** Dashboard history-table table style **/
+.dashboard-history{
+	.dashboard-table {
+		.table-col {
+			.table-col-inner{
+				height: auto;
+			}
+		}
+	}
+}
+.history-table {
+	max-height: 300px;
+
+	table {
+		td {
+			&.mission-col {
+				width: 25%;
+				min-width: 270px;
+				white-space: normal !important;
+			}
+
+			&.expand-col {
+				width: 40%;
+				max-width: 1px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+
+				@include md-max {
+					min-width: 300px;
+				}
+
+				&.remove-truncate {
+					white-space: normal;
+				}
+			}
+		}
+	}
+}
+
+/** Timesheet Table style **/
+.timesheet-table {
+	max-height:400px;
+	&.timesheethours-table {
+		table {
+			tr {
+				&:last-child {
+					td {
+						&.status-col {
+							display: none;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	table {
+
+		td,
+		th {
+			font-size: 15px;
+			line-height: 18px;
+			padding: 5px 24px;
+			vertical-align: middle;
+
+			@include xl-max {
+				padding: 5px 15px;
+			}
+
+			.dashboard-table .table-outer & {
+				@include md-max {
+					white-space: normal;
+				}
+			}
+
+			@include xxs-max {
+				padding: 5px 10px;
+			}
+
+			&:not(.mission-col) {
+				text-align: center;
+			}
+		}
+
+		tr {
+			&.total-row {
+				td {
+					font-weight: 700;
+					cursor: default !important;
+					pointer-events: none;
+
+					&::before {
+						content: none;
+						display: none;
+					}
+
+					&.total-col {
+						background: $light-gray-secondary;
+					}
+				}
+			}
+		}
+
+		th {
+			height: 70px;
+
+			@include sm-max {
+				height: 56px;
+			}
+
+			@include xxs-max {
+				height: 50px;
+			}
+
+			.dashboard-table .table-outer & {
+				@include xl-max {
+					height: 60px;
+				}
+
+				@include lg-max {
+					height: 55px;
+				}
+
+				@include md-max {
+					height: 50px;
+				}
+			}
+
+			span {
+				display: block;
+				font-weight: 400;
+				font-size: 13px;
+			}
+		}
+
+		td {
+			min-width: 140px;
+			height: 56px;
+
+			@include xlg-max {
+				min-width: 137px;
+			}
+
+			@include xl-max {
+				min-width: 106px;
+				height: 52px;
+			}
+
+			@include lg-max {
+				min-width: 81px;
+			}
+
+			@include md-max {
+				height: 45px;
+				min-width: 63px;
+			}
+
+			@include xxs-max {
+				height: 40px;
+				min-width: 70px;
+			}
+
+			&:not(.mission-col):not(.approved):not(.total-col) {
+				cursor: pointer;
+				position: relative;
+				z-index: 1;
+				background: transparent;
+
+				&:hover {
+					background: $light-gray url($assetUrl + "/plus-ic-black.svg") no-repeat !important;
+					-webkit-background-size: auto 20px !important;
+					-moz-background-size: auto 20px !important;
+					-o-background-size: auto 20px !important;
+					background-size: auto 20px !important;
+					background-position: center center !important;
+					z-index: 3;
+					color: transparent;
+					position: inherit;
+
+					&:after {
+						content: none;
+					}
+				}
+			}
+
+			&.approved,
+			&.declined,
+			&.approval {
+				position: relative;
+
+				&:after {
+					position: absolute;
+					content: "";
+					border-style: solid;
+					border-width: 15px 22px 0 0;
+					right: 0;
+					bottom: 0;
+					top: auto;
+					left: auto;
+
+					@include xs-max {
+						border-width: 10px 20px 0 0;
+					}
+				}
+			}
+
+			&.approved {
+				pointer-events: none;
+
+				&:after {
+					border-color: transparent $success $success;
+				}
+			}
+
+			&.declined {
+				&:after {
+					border-color: transparent $error $error;
+				}
+			}
+
+			&.approval {
+				&:after {
+					border-color: transparent $info $info;
+				}
+			}
+
+			&.disabled {
+				cursor: default;
+				pointer-events: none;
+			}
+		}
+
+		th {
+			&.currentdate-col {
+				background: $light-gray !important;
+				position: inherit !important;
+			}
+		}
+
+		.mission-col {
+			text-align: left;
+			min-width: 270px;
+
+			@include lg-max {
+				min-width: 215px;
+			}
+
+			@include md-max {
+				min-width: 180px;
+			}
+
+			//   @include sm-max {
+			//       min-width: 230px;
+			//   }
+			//   @include xxs-max {
+			//       min-width: 200px;
+			//   }
+		}
+
+		.total-col {
+			font-weight: 700;
+		}
+	}
+}
+
+/** Table modal style **/
+.table-modal {
+	.modal-dialog {
+		max-width: 1150px;
+	}
+}
+
+.tab-with-picker {
+	.table-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		flex-wrap: wrap;
+
+		@include md-max {
+			margin-bottom: 10px;
+		}
+	}
+
+	.table-action-btn {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 10px;
+
+		@include sm-max {
+			position: absolute;
+			bottom: -40px;
+			left: 0;
+		}
+
+		.picker-btn {
+			border: 1px solid $primary-border-color;
+			padding: 9px !important;
+			margin-right: 8px;
+
+			&.disabled {
+				img {
+					opacity: 0.4;
+				}
+			}
+		}
+	}
+
+	.picker-btn {
+		background: $light-gray;
+		border: none;
+		display: inline-flex;
+		align-items: center;
+		border-radius: 3px;
+
+		&.prev-btn {
+			border-radius: 3px 0 0 3px;
+			padding: 5px 10px 5px 13px;
+		}
+
+		&.next-btn {
+			border-radius: 0 3px 3px 0;
+			padding: 5px 13px 5px 10px;
+		}
+
+		&.disabled {
+			pointer-events: none;
+			cursor: default;
+		}
+
+		img {
+			width: 12px;
+			height: 12px;
+		}
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.inner-wrap {
+		display: inline-flex;
+		align-items: center;
+		margin-bottom: 0;
+		flex-wrap: wrap;
+
+		>div {
+			margin-right: 20px;
+			margin-bottom: 8px;
+
+			&:last-child {
+				margin-right: 0;
+			}
+
+			@include sm-max {
+				margin-right: 10px;
+			}
+		}
+
+		p {
+			margin-bottom: 0;
+		}
+
+		.picker-wrapper {
+			margin-bottom: 8px;
+			display: inline-flex;
+			align-items: center;
+		}
+
+		.datepicker-block {
+			position: relative;
+			padding: 1px 3px 4px 5px;
+			@include border-radius(3px);
+			border: 1px solid $primary-border-color;
+
+			img {
+				height: 22px;
+				width: 22px;
+			}
+
+			.mx-datepicker {
+				position: absolute;
+				opacity: 0;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+			}
+
+			.mx-input-wrapper {
+				height: 100%;
+			}
+
+			.mx-input {
+				height: 100% !important;
+				width: 100% !important;
+				padding: 0 !important;
+				cursor: pointer;
+			}
+
+			.mx-input-append {
+				display: none;
+			}
+		}
+
+		.select-time-period {
+			display: inline-flex;
+			@include border-radius(3px);
+			margin-right: 20px;
+
+			@include xxs-max {
+				margin-right: 15px;
+			}
+
+			span {
+				cursor: pointer;
+				color: $gray-primary;
+				border: 1px solid $primary-border-color;
+				padding: 3px 9px;
+
+				&:first-child {
+					border-radius: 3px 0 0 3px;
+				}
+
+				&:last-child {
+					border-radius: 0 3px 3px 0;
+				}
+
+				&.current {
+					background: $light-gray;
+					cursor: default;
+				}
+			}
+		}
+
+		.custom-dropdown {
+			width: 102px;
+
+			>span {
+				box-shadow: none;
+			}
+		}
+
+		.picker-btn-wrap {
+			&:not(.table-action-btn) {
+				display: inline-flex;
+				border: 1px solid $primary-border-color;
+				@include border-radius(3px);
+
+				span {
+					padding: 3px 11px;
+					color: $gray-primary;
+					width: 114px;
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+
+.meta-data-list {
+	display: flex;
+	flex: 1;
+	-ms-flex: 1;
+	margin: 10px 0 50px;
+
+	li {
+		margin-right: 15px;
+		padding-left: 21px;
+		position: relative;
+		font-size: 14px;
+		line-height: 18px;
+
+		&:before {
+			position: absolute;
+			height: 12px;
+			width: 15px;
+			content: "";
+			border-radius: 3px;
+			top: 3px;
+			left: 0;
+		}
+
+		&.approve-indication {
+			&:before {
+				background: $success;
+			}
+		}
+
+		&.decline-indication {
+			&:before {
+				background: $error;
+			}
+		}
+
+		&.approval-indication {
+			&:before {
+				background: $info;
+			}
+		}
+	}
+}
+
+.table {
+	&.b-table {
+
+		>thead,
+		>tbody {
+			>tr {
+				>.b-table-sticky-column:last-child {
+					right: 0;
+					left: auto;
+				}
+			}
+		}
+	}
+}
+
+.table-wrapper-outer {
+	position: relative;
+}
+
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+	table {
+		tr {
+			td {
+
+				&.approved,
+				&.declined,
+				&.approval {
+					&:after {
+						top: calc(100% + 12px) !important;
+						bottom: auto !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+// @supports (-ms-accelerator: true) {
+//   table {
+//     tr {
+//       td {
+//         &.approved,
+//         &.declined,
+//         &.approval {
+//           &:after {
+//             top: calc(100% + 12px) !important;
+//             bottom: auto !important;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

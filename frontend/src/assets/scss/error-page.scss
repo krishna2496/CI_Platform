@@ -1,0 +1,68 @@
+.error-page-wrap {
+  margin: 0 auto;
+  text-align: center;
+  .error-img {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-height: 493px;
+    @include lg-max {
+      min-height: 380px;
+    }
+    @include sm-max {
+      min-height: 250px;
+    }
+  }
+  .error-content {
+    padding: 15px 0 80px;
+    @include sm-max {
+      padding: 15px 0 50px;
+    }
+    h1 {
+      font-size: 44px;
+      line-height: 50px;
+      margin-bottom: 15px;
+      @include lg-max {
+        font-size: 40px;
+      }
+      @include sm-max {
+        font-size: 32px;
+        line-height: 40px;
+      }
+    }
+    h2 {
+      font-size: 30px;
+      line-height: 35px;
+      margin-bottom: 35px;
+      @include lg-max {
+        font-size: 28px;
+      }
+      @include sm-max {
+        font-size: 24px;
+        line-height: 30px;
+        margin-bottom: 15px;
+      }
+    }
+    p {
+      font-size: 24px;
+      line-height: 30px;
+      @include lg-max {
+        font-size: 20px;
+      }
+      @include sm-max {
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+  }
+  .btn-row {
+    text-align: center;
+    padding-top: 28px;
+    @include sm-max {
+      padding-top: 10px;
+    }
+    .btn {
+      margin: 0 auto;
+    }
+  }
+}

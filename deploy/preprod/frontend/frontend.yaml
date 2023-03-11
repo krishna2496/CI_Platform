@@ -1,0 +1,132 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ci-frontend-deployment
+  labels:
+    app: ci-frontend
+    deployment: {{DEPLOYMENT}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ci-frontend
+  template:
+    metadata:
+      labels:
+        app: ci-frontend
+        deployment: {{DEPLOYMENT}}
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+            weight: 1
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+                - spot
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-frontend
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 10
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-frontend
+              topologyKey: kubernetes.io/hostname
+            weight: 20
+      containers:
+      - image: lusotycoon/apache-exporter
+        imagePullPolicy: Always
+        name: exporter
+        ports:
+        - containerPort: 9117
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 10m
+            
+      - image: registry.kubernetes.infra.optimy.net/ci/ci-source-preprod:{{GO_PIPELINE_LABEL}}
+        name: ci-frontend
+        env: 
+        - name: VUE_APP_S3_IMAGE_PATH
+          value: https://optimy-dev-tatvasoft.s3.eu-central-1.amazonaws.com/
+        - name: VUE_APP_API_ENDPOINT
+          value: https://api.ci.staging.optimy.net/
+        - name: VUE_APP_LANGUAGE_API_ENDPOINT
+          value: https://api.ci.staging.optimy.net/language/
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 40m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /etc/apache2/sites-enabled/000-default.conf
+          name: ci-frontend-apache-config
+          subPath: 000-default.conf
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: ci-frontend-apache-config
+        name: ci-frontend-apache-config
+       
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ci-frontend-service
+  labels:
+    app: ci-frontend
+spec:
+  selector:
+    app: ci-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      name: ci-frontend-service
+    - protocol: TCP
+      port: 9117
+      name: exporter
+  clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ci-frontend-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/priority: "1"
+spec:
+  rules:
+  - host: ci.test.optimy.net
+    http:
+      paths:
+      - backend:
+          serviceName: ci-frontend-service
+          servicePort: 80
+  - host: '*.front.ci.test.optimy.net'
+    http:
+      paths:
+      - backend:
+          serviceName: ci-frontend-service
+          servicePort: 80
+status:
+  loadBalancer: {}

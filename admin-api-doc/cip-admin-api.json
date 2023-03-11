@@ -1,0 +1,903 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "",
+        "title": "CI Platform Admin",
+        "description": ""
+    },
+    "host":"localhost",
+    "basePath":"/cip/admin-api",
+    "tags":[
+        {
+            "name":"Tenant (Milestone - 1)"
+        },
+        {
+            "name":"API user (Milestone - 2)"
+        },
+        {
+            "name":"Tenant settings (Milestone - 3)"
+        },
+        {
+            "name":"Language management (Milestone - 4)"
+        },
+        {
+            "name":"Currency management"
+        }
+    ],
+    "paths": {
+        "/tenants": {
+            "post": {
+                "operationId": "POST_team4-cip-admin-api-tenants",
+                "summary": "Create tenent",
+                "description": "This endpoint will create new tenant. When tenant is created, background processes will run using cron job. Theses processes are run database migations and seeders, create asset folder in s3 and compile scss file. Cron job is set to run at every minute. ",
+                "tags":[
+                    "Tenant (Milestone - 1)"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "schema": {
+                            "$ref":"#/definitions/Tenant"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "422":{
+                        "description":"Unprocessable entity - Invalid input"
+                    }
+                }
+            },
+            "get": {
+                "operationId": "GET_team4-cip-admin-api-tenants",
+                "summary": "Listing Tenant",
+                "description": "This endpoint will list all tenants.",
+                "tags":[
+                        "Tenant (Milestone - 1)"
+                    ],
+                "consumes": [
+                    "application/json"
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    }
+                }
+            }
+        },
+        "/tenants/{tenantId}/": {
+            "get": {
+                "operationId": "GET_team4-cip-admin-api-tenants-1",
+                "summary": "Get tenant detail by id ",
+                "description": "Fetch tenant detail by its id",
+                "tags":[
+                        "Tenant (Milestone - 1)"
+                    ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id to get details",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "PATCH_team4-cip-admin-api-tenants-1",
+                "summary": "Update tenant details",
+                "tags":[
+                    "Tenant (Milestone - 1)"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref":"#/definitions/Tenant"
+                        }
+                    },
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id to update",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "422":{
+                        "description":"Unprocessable entity - Invalid input"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE_team4-cip-admin-api-tenants-2",
+                "summary": "Delete tenant",
+                "tags":[
+                    "Tenant (Milestone - 1)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id to delete",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    }
+                }
+            }
+        },
+        "/tenants/{tenantId}/api_users/": {
+            "post": {
+                "operationId": "POST_team4-cip-admin-api-tenants-create-api-user",
+                "summary": "Create API User",
+                "description": "This endpoint will create API user. It will generate API key and API secrete, which will be used for tenant admin API Authorization.",
+                "tags":[
+                    "API user (Milestone - 2)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    }
+                }
+            },
+            "get": {
+                "operationId": "POST_team4-cip-admin-api-tenants-list-api-user",
+                "summary": "Listing API users of a tenant",
+                "description": "This endpoint will list all API users",
+                "tags":[
+                    "API user (Milestone - 2)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    }
+                }
+            }
+        },
+        "/tenants/{tenantId}/api_users/{api_user_id}/": {
+            "get": {
+                "operationId": "POST_team4-cip-admin-api-tenants-api-user-detail",
+                "summary": "Get API User detail",
+                "tags":[
+                    "API user (Milestone - 2)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                    {
+                        "name":"api_user_id",
+                        "in":"path",
+                        "description":"API user id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"API user not found in the system"
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "POST_team4-cip-admin-api-tenants-api-user-update",
+                "summary": "Renew API user's secret key",
+                "tags":[
+                        "API user (Milestone - 2)"
+                    ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                    {
+                        "name":"api_user_id",
+                        "in":"path",
+                        "description":"API user id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"API user not found in the system"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "POST_team4-cip-admin-api-tenants-api-user-delete",
+                "summary": "Delete API user",
+                "tags":[
+                    "API user (Milestone - 2)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                    {
+                        "name":"api_user_id",
+                        "in":"path",
+                        "description":"API user id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"API user not found in the system"
+                    }
+                }
+            }
+        },
+        "/tenants/{tenantId}/settings": {
+            "get": {
+                "operationId": "POST_team4-cip-admin-api-get-tenant-settings",
+                "summary": "List tenant settings",
+                "description": "It will show all available tenant options/settings. Example: skills, themes, news etc.",
+                "tags":[
+                    "Tenant settings (Milestone - 3)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                    {
+                        "name": "keys[]",
+                        "in": "path",
+                        "description": "List of all tenant setting keys",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    }
+                }
+            }
+        },
+        "/tenants/{tenantId}/settings/": {
+            "post": {
+                "operationId": "POST_team4-cip-admin-api-store-tenant-settings",
+                "summary": "Enable/disable tenant settings",
+                "description": "Super admin(Optimy) will enable/disable tenant options/settings for a tenant.",
+                "tags":[
+                    "Tenant settings (Milestone - 3)"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name":"tenantId",
+                        "in":"path",
+                        "description":"Tenant id",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "settings": {
+                                    "type": "array",
+                                    "items": {
+                                    "type": "object",
+                                    "properties": {
+                                            "tenant_setting_id": {
+                                                "type":"integer",
+                                                "format":"int32"
+                                                },
+                                            "value": {
+                                                "type": "integer",
+                                                "description": "If enable, value should be passed 1 and for disable value should be passed 0",
+                                                "enum":[
+                                                    "1",
+                                                    "0"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Tenant not found in the system"
+                    },
+                    "422":{
+                        "description":"Invalid input data"
+                    }
+                }
+            },
+        },
+        "/tenants/language/": {
+            "post": {
+                "operationId": "POST_team4-cip-admin-api-add-language",
+                "summary": "Add language",
+                "description": "This is for master database of languages. This endpoint will add language in system",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref":"#/definitions/Language"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "422":{
+                        "description":"Unprocessable entity - Invalid input"
+                    }
+                }
+            },
+            "get": {
+                "operationId": "GET_team4-cip-admin-api-get-languages",
+                "summary": "Listing languages",
+                "description": "To fetch only active languages, append status=true in endpoint. e.g. /tenants/language?status=true",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    }
+                }
+            }
+        },
+        "/tenants/language/{languageId}/": {
+            "patch": {
+                "operationId": "POST_team4-cip-admin-api-update-language",
+                "summary": "Edit language details",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description":"language id to get details",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref":"#/definitions/Language"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Language not found in the system"
+                    },
+                    "422":{
+                        "description":"Unprocessable entity - Invalid input"
+                    }
+                }
+            },
+            "get": {
+                "operationId": "POST_team4-cip-admin-api-get-language-detail",
+                "summary": "Get language details",
+                "tags":[
+                        "Language management (Milestone - 4)"
+                    ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description":"language id to get details",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Language not found in the system"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "POST_team4-cip-admin-api-delete-language-detail",
+                "summary": "Delete language",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description":"language id to get details",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    },
+                ],
+                "responses": {
+                    "400":{
+                        "description":"Bad request"
+                    },
+                    "404":{
+                        "description":"Language not found in the system"
+                    }
+                }
+            }
+        },
+        "/tenants/tenant-language/": {
+            "post": {
+                "operationId": "POST_team4-cip-admin-api-add-edit-tenant-language",
+                "summary": "Add/edit tenant language",
+                "description": "Using this endpoint, super admin can add language to a tenant. Admin can also set default language for a tenant",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref":"#/definitions/TenantLanguage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "500":{
+                        "description":"Internal server error"
+                    },
+                    "422":{
+                        "description":"Unprocessable entity - Invalid input"
+                    }
+                }
+            },
+        },
+        "/tenants/tenant-language/{tenantId}": {
+            "get": {
+                "operationId": "POST_team4-cip-admin-api-list-tenant-language",
+                "summary": "List tenant languages",
+                "description": "This endpoint will list all languages for a tenant",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "description":"Tenant ID",
+                        "in": "path",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64"
+                    }
+                ],
+                "responses": {
+                    "500":{
+                        "description":"Internal server error"
+                    },
+                    "404":{
+                        "description":"Tenant not found in system"
+                    }
+                }
+            },
+        },
+        "/tenants/tenant-language/{tenantLanguageId}/": {
+            "delete": {
+                "operationId": "POST_team4-cip-admin-remove-tenant-language",
+                "summary": "Remove tenant language",
+                "description": "This endpoint will remove language from a tenant",
+                "tags":[
+                    "Language management (Milestone - 4)"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantLanguageId",
+                        "description":"Tenant language id to delete",
+                        "required":true,
+                        "type":"integer",
+                        "format":"int64",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "500":{
+                        "description":"Internal server error"
+                    },
+                    "404":{
+                        "description":"Tenant language not found in the system"
+                    }
+                }
+            }
+        },
+        "/tenants/migration/": {
+            "post": {
+                "operationId": "POST_team4-cip-admin-api-tenants-run-migration",
+                "summary": "Database migration and seeder on tenant database",
+                "description": "This endpoint will make database related changes to all tenant database.",
+                "tags":[
+                    "Tenant migration"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "migration_file",
+                        "description": "It should be a laravel php file for migration or seeder class",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "description": "If you are adding migration changes then select migration. If you want to add data then select seeder",
+                        "enum": ["migration","seeder"],
+                    },
+                ],
+                "responses": {
+                    "422":{
+                        "description":"Invalid input"
+                    }
+                }
+            }
+        },
+        "/tenants/{tenantId}/tenant-currencies/": {
+            "post": {
+                "operationId": "POST-cip-admin-api-add-currency",
+                "summary": "Add currency for a tenant",
+                "description": "Add currency for a tenant",
+                "tags": [
+                    "Currency management"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                        "$ref": "#/definitions/Currency"
+                        }
+                    },
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "Tenant id to create tenant currency",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "422": {
+                        "description": "Unprocessable entity - Invalid input"
+                    },
+                    "404": {
+                        "description": "Tenant not found in the system"
+                    }
+                }
+            },
+            "get": {
+                "operationId": "GET-cip-admin-api-get-currency",
+                "summary": "List tenant’s currency",
+                "description": "To fetch all tenant currency",
+                "tags": [
+                    "Currency management"
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "parameters": [
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "Tenant Id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Tenant not found in the system"
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "PATCH-cip-admin-api-update-currency",
+                "summary": "Update tenant’s currency",
+                "description": "To update tenant currency",
+                "tags": [
+                    "Currency management"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                        "$ref": "#/definitions/Currency"
+                        }
+                    },
+                    {
+                        "name": "tenantId",
+                        "in": "path",
+                        "description": "Tenant id to update tenant currency",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "400":{
+                        "description": "Bad request"
+                    },
+                    "404":{
+                        "description": "Tenant not found in the system"
+                    },
+                    "422":{
+                        "descrip,tion": "Unprocessable entity - Invalid input"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Tenant":{
+        "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Tenant FQDN"
+                },
+                "sponsor_id": {
+                    "type":"integer",
+                    "format":"int64"
+                }
+            }
+        },
+        "Language":{
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "code": {
+                    "type":"string",
+                    "description":"Language code.(i.e. en, fr etc)",
+                },
+                "status": {
+                    "type":"integer",
+                    "description":"1 => Active, 0 => Inactive",
+                    "enum":[
+                        "1",
+                        "0"
+                    ]
+                }
+            }
+        },
+        "TenantLanguage":{
+            "type": "object",
+            "properties": {
+                "tenant_id": {
+                    "type": "integer"
+                },
+                "language_id": {
+                    "type":"integer"
+                },
+                "default": {
+                    "type":"integer",
+                    "description":"Set default language of the platform",
+                    "enum":[
+                        "1",
+                        "0"
+                    ]
+                }
+            }
+        },
+        "Currency":{
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description" : "Currency code according to ISO-4217"
+                },
+                "default": {
+                    "type":"boolean",
+                    "description":"Set default currency of the platform"
+                },
+                "is_active": {
+                    "type":"boolean",
+                    "description":"Set if currency is active/inactive on the platform"
+                }
+            }
+        }
+    }
+}

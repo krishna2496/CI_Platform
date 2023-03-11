@@ -1,0 +1,307 @@
+/*General-modal*/
+.b-modal-target {
+  position: relative;
+  z-index: 999999;
+}
+
+.modal {
+  &.lg-popup {
+    .modal-dialog {
+      @include sm-min {
+        max-width: 1180px;
+      }
+    }
+  }
+
+  &.md-popup {
+    .modal-dialog {
+      @include sm-min {
+        max-width: 940px;
+      }
+    }
+  }
+
+  &.sm-popup {
+    .modal-dialog {
+      @include sm-min {
+        max-width: 530px;
+      }
+    }
+  }
+
+  .modal-dialog {
+    padding: 15px;
+    margin: 0 auto;
+
+    @include xs-max {
+      padding: 8px;
+    }
+
+    &.modal-dialog-centered {
+      min-height: 100%;
+    }
+  }
+
+  .modal-header {
+    position: relative;
+    border-bottom: none;
+    padding: 24px 60px 0 30px;
+    justify-content: flex-start;
+
+    @include sm-max {
+      padding: 20px 60px 0 18px;
+    }
+
+    .close {
+      font-size: 0;
+      background: url($assetUrl + "/cross-ic.svg") no-repeat;
+      padding: 0;
+      margin: 0;
+      width: 30px;
+      height: 30px;
+      background-position: center center;
+      background-size: 17px;
+      opacity: 1;
+      float: none;
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      @include transformY(-50%);
+      line-height: normal;
+      margin-top: 12px;
+
+      @include sm-max {
+        width: 15px;
+        height: 15px;
+        background-size: 15px;
+        right: 18px;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .modal-title {
+    font-size: 22px;
+    line-height: 28px;
+
+    @include sm-max {
+      font-size: 20px;
+      line-height: 26px;
+    }
+  }
+
+  .modal-content {
+    border: none;
+    border-radius: 3px;
+  }
+
+  .modal-body {
+    padding: 26px 30px;
+
+    @include sm-max {
+      padding: 18px;
+    }
+
+    .btn {
+      @include sm-max {
+        min-width: 110px;
+        min-height: 44px;
+      }
+    }
+  }
+
+  .btn-wrap {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+
+    @include sm-max {
+      margin-top: 25px;
+    }
+
+    .btn {
+      display: inline-block !important;
+      margin-right: 15px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      @include sm-max {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.btn-cross {
+  position: absolute;
+  background: transparent !important;
+  height: 20px;
+  width: 20px;
+  border: none !important;
+
+  img {
+    height: 16px;
+    width: 16px;
+
+    @include sm-max {
+      height: 14px;
+      width: 14px;
+    }
+  }
+}
+
+/*Skill-modal*/
+
+.skill-modal {
+  .modal-header {
+    .close {
+      @include sm-max {
+        right: 23px;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .modal-dialog {
+    @include sm-min {
+      max-width: 940px;
+      padding: 0 15px;
+    }
+  }
+}
+
+/** send message modal style **/
+.send-message-modal {
+  .modal-dialog {
+    @include sm-min {
+      //   max-width: 1150px;
+      padding: 0 15px;
+    }
+
+    .form-group {
+      &.d-flex {
+        >div {
+          display: flex;
+          margin-bottom: 8px;
+
+          >label {
+            margin: 0 10px 0 0;
+            min-width: 50px;
+          }
+
+          >p {
+            margin: 0;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+/** Contact modal style **/
+.contact-modal {
+  .modal-dialog {
+    @include sm-min {
+      max-width: 1150px;
+      padding: 0 15px;
+    }
+  }
+}
+
+.mission-row {
+  border-bottom: 1px solid $primary-border-color;
+  margin-bottom: 30px;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.date-col {
+  @include xs-max {
+    margin-bottom: 15px;
+  }
+}
+
+.modal {
+  .close {
+    cursor: pointer;
+  }
+
+  &.table-modal {
+    .modal-header {
+      .close {
+        margin-top: 0;
+      }
+    }
+
+    .time-col-left {
+      padding-right: 8px;
+    }
+
+    .time-col-right {
+      padding-left: 8px;
+    }
+  }
+
+  .custom-dropdown {
+    >span {
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+  }
+}
+
+.modal-open {
+  header {
+    z-index: 1039;
+  }
+}
+
+body {
+  &.browser-ios {
+    &.modal-open {
+      position: fixed;
+      content: "";
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: transparent;
+      z-index: 1039;
+    }
+  }
+}
+
+.userdetail-modal {
+  .modal-dialog {
+    padding-top: 50px;
+    max-width: 800px;
+  }
+}
+
+
+
+.badge {
+  &.status-label {
+    background: transparent;
+    color: $black-primary;
+    border: 1px solid $primary-border-color;
+    border-radius: 50px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    padding: 5px 18px;
+    vertical-align: middle;
+    font-size: 15px;
+    font-weight: 400;
+  }
+}

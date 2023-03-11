@@ -1,0 +1,189 @@
+//break points
+@mixin xxxs-max {
+  @media (max-width: 374px) {
+    @content;
+  }
+}
+
+// Transform Mixin
+@mixin transform($transforms) {
+  -moz-transform: $transforms;
+  -o-transform: $transforms;
+  -ms-transform: $transforms;
+  -webkit-transform: $transforms;
+  transform: $transforms;
+}
+
+@mixin translate($x, $y) {
+  @include transform(translate($x, $y));
+}
+
+@mixin rotate($deg) {
+  @include transform(rotate(#{$deg}deg));
+}
+
+@mixin transformrotate($rotate) {
+  -moz-transform: rotate($rotate);
+  -o-transform: rotate($rotate);
+  -ms-transform: rotate($rotate);
+  -webkit-transform: rotate($rotate);
+  transform: rotate($rotate);
+}
+
+@mixin transformY($transforms) {
+  -moz-transform: translateY($transforms);
+  -o-transform: translateY($transforms);
+  -ms-transform: translateY($transforms);
+  -webkit-transform: translateY($transforms);
+  transform: translateY($transforms);
+}
+
+@mixin transformX($transforms) {
+  -moz-transform: translateX($transforms);
+  -o-transform: translateX($transforms);
+  -ms-transform: translateX($transforms);
+  -webkit-transform: translateX($transforms);
+  transform: translateX($transforms);
+}
+
+@mixin transformZ($transforms) {
+  -moz-transform: translateZ($transforms);
+  -o-transform: translateZ($transforms);
+  -ms-transform: translateZ($transforms);
+  -webkit-transform: translateZ($transforms);
+  transform: translateZ($transforms);
+}
+
+@mixin scale($transforms) {
+  -moz-transform: scale($transforms);
+  -o-transform: scale($transforms);
+  -ms-transform: scale($transforms);
+  -webkit-transform: scale($transforms);
+  transform: scale($transforms);
+}
+
+@mixin rotate($transforms) {
+  -moz-transform: rotate($transforms);
+  -o-transform: rotate($transforms);
+  -ms-transform: rotate($transforms);
+  -webkit-transform: rotate($transforms);
+  transform: rotate($transforms);
+}
+
+@mixin transition($transition) {
+  transition: $transition;
+  -o-transition: $transition;
+  -ms-transition: $transition;
+  -webkit-transition: $transition;
+  transition: $transition;
+}
+
+//placeholder
+@mixin placeholder {
+  &.placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content;
+  }
+  &::-moz-placeholder {
+    @content;
+  }
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+//break points
+@mixin xxxs-max {
+  @media (max-width: 374px) {
+    @content;
+  }
+}
+
+@mixin xxs-max {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin xs-max {
+  @media (max-width: 575px) {
+    @content;
+  }
+}
+
+@mixin xs-min {
+  @media (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin sm-max {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin sm-min {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin md-min {
+  @media (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin md-max {
+  @media (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin lmd-min {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+@mixin lmd-max {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin lg-max {
+  @media (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin lg-min {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin xl-max {
+  @media (max-width: 1439px) {
+    @content;
+  }
+}
+
+@mixin xl-min {
+  @media (min-width: 1440px) {
+    @content;
+  }
+}
+
+@mixin xlg-max {
+  @media (max-width: 1680px) {
+    @content;
+  }
+}

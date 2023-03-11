@@ -1,0 +1,126 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ci-admin-api-doc-deployment
+  labels:
+    app: ci-admin-api-doc
+    deployment: {{DEPLOYMENT}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ci-admin-api-doc
+  template:
+    metadata:
+      labels:
+        app: ci-admin-api-doc
+        deployment: {{DEPLOYMENT}}
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+            weight: 1
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kops.k8s.io/instancegroup
+                operator: In
+                values:
+                - nodes
+                - spot
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-admin-api-doc
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 10
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - ci-admin-api-doc
+              topologyKey: kubernetes.io/hostname
+            weight: 20
+      containers:
+      - image: lusotycoon/apache-exporter
+        imagePullPolicy: Always
+        name: exporter
+        ports:
+        - containerPort: 9117
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 10m
+
+      - image: registry.kubernetes.infra.optimy.net/ci/ci-source:{{GO_PIPELINE_LABEL}}
+        name: ci-admin-api-doc
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 40m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /etc/apache2/sites-enabled/000-default.conf
+          name: ci-admin-api-doc-apache-config
+          subPath: 000-default.conf
+        ports:
+        - containerPort: 80
+
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: ci-admin-api-doc-apache-config
+        name: ci-admin-api-doc-apache-config
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ci-admin-api-doc-service
+  labels:
+    app: ci-admin-api-doc
+spec:
+  selector:
+    app: ci-admin-api-doc
+  ports:
+    - protocol: TCP
+      port: 80
+      name: ci-admin-api-doc-service
+    - protocol: TCP
+      port: 9117
+      name: exporter
+  clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/whitelist-source-range: 109.88.0.88/32, 87.66.0.172/32,
+      94.225.245.228/32, 52.57.232.26/32, 51.38.187.3/32, 212.161.79.81/29, 52.29.166.205/32, 112.199.89.162/32, 203.177.98.75/32, 210.213.230.26/32, 210.213.242.66/32
+    traefik.ingress.kubernetes.io/priority: "1"
+    ingress.kubernetes.io/auth-type: "basic"
+    ingress.kubernetes.io/auth-secret: "ci-admin-api-doc"
+  name: ci-api-admin-doc-ingress
+spec:
+  rules:
+  - host: admin-api-doc.ci.test.optimy.net
+    http:
+      paths:
+      - backend:
+          serviceName: ci-admin-api-doc-service
+          servicePort: 80
+status:
+  loadBalancer: {}
